@@ -1,0 +1,117 @@
+{
+ "reference": "upstream LongLive-Plug/scripts/merge_lora.py (sha256 189e4f9b1156fe53...)",
+ "adapters": [
+  {
+   "role": "few_step",
+   "sha256": "743fc9a44e118a09f932ae5a0420c88b46bb6afdf605230f115e93eb710884ba",
+   "pinned": true,
+   "alpha": 128.0,
+   "rank": 128,
+   "weight": 1.0
+  },
+  {
+   "role": "cfg",
+   "sha256": "1a311f6030a74e739d9705347079a131bd5a5579bd693c993026d63e36d4bea0",
+   "pinned": true,
+   "alpha": 128.0,
+   "rank": 128,
+   "weight": 0.5
+  }
+ ],
+ "base_file": "wan2.1_t2v_14B_bf16.safetensors",
+ "torch": "2.14.1+cu130",
+ "device": "cpu",
+ "layers": [
+  {
+   "layer": "blocks.0.self_attn.q",
+   "shape": [
+    5120,
+    5120
+   ],
+   "dtype": "bfloat16",
+   "fraction_bitwise_equal_to_upstream": 1.0,
+   "max_ulp_diff": 0,
+   "max_abs_diff": 0.0,
+   "fraction_changed_vs_base": 0.2662453055381775,
+   "delta_rms": 2.4226408640970476e-05
+  },
+  {
+   "layer": "blocks.0.cross_attn.v",
+   "shape": [
+    5120,
+    5120
+   ],
+   "dtype": "bfloat16",
+   "fraction_bitwise_equal_to_upstream": 1.0,
+   "max_ulp_diff": 0,
+   "max_abs_diff": 0.0,
+   "fraction_changed_vs_base": 0.3448980748653412,
+   "delta_rms": 3.4555305319372565e-05
+  },
+  {
+   "layer": "blocks.0.ffn.0",
+   "shape": [
+    13824,
+    5120
+   ],
+   "dtype": "bfloat16",
+   "fraction_bitwise_equal_to_upstream": 1.0,
+   "max_ulp_diff": 0,
+   "max_abs_diff": 0.0,
+   "fraction_changed_vs_base": 0.31350627541542053,
+   "delta_rms": 2.052597665169742e-05
+  },
+  {
+   "layer": "blocks.19.self_attn.o",
+   "shape": [
+    5120,
+    5120
+   ],
+   "dtype": "bfloat16",
+   "fraction_bitwise_equal_to_upstream": 1.0,
+   "max_ulp_diff": 0,
+   "max_abs_diff": 0.0,
+   "fraction_changed_vs_base": 0.3899374008178711,
+   "delta_rms": 3.592611392377876e-05
+  },
+  {
+   "layer": "blocks.19.ffn.2",
+   "shape": [
+    5120,
+    13824
+   ],
+   "dtype": "bfloat16",
+   "fraction_bitwise_equal_to_upstream": 1.0,
+   "max_ulp_diff": 0,
+   "max_abs_diff": 0.0,
+   "fraction_changed_vs_base": 0.39621391892433167,
+   "delta_rms": 3.3207510568900034e-05
+  },
+  {
+   "layer": "blocks.39.cross_attn.k",
+   "shape": [
+    5120,
+    5120
+   ],
+   "dtype": "bfloat16",
+   "fraction_bitwise_equal_to_upstream": 1.0,
+   "max_ulp_diff": 0,
+   "max_abs_diff": 0.0,
+   "fraction_changed_vs_base": 0.5219699144363403,
+   "delta_rms": 5.931931809755042e-05
+  },
+  {
+   "layer": "blocks.39.ffn.0",
+   "shape": [
+    13824,
+    5120
+   ],
+   "dtype": "bfloat16",
+   "fraction_bitwise_equal_to_upstream": 1.0,
+   "max_ulp_diff": 0,
+   "max_abs_diff": 0.0,
+   "fraction_changed_vs_base": 0.5333177447319031,
+   "delta_rms": 4.2123079765588045e-05
+  }
+ ]
+}

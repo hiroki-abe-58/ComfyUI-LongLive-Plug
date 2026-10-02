@@ -1,0 +1,1802 @@
+{
+ "description": "Raw run records from scripts/run_comparison.py for ComfyUI-LongLive-Plug v0.1.0. s1 and s2 are separate ComfyUI server sessions (fresh process each).",
+ "prompt": "A red fox trots through fresh snow in a quiet birch forest at sunrise, soft golden light filtering between the white trunks, its breath visible in the cold air, snow crystals sparkling, low tracking shot, shallow depth of field, cinematic and natural colors.",
+ "comfyui_launch_flags": [
+  "--bf16-unet",
+  "--bf16-text-enc",
+  "--fp32-vae",
+  "--disable-api-nodes",
+  "--listen 127.0.0.1"
+ ],
+ "host": {
+  "os": "Windows 11 Pro 10.0.26200",
+  "cpu": "Intel Core Ultra 9 285K",
+  "ram_gb": 64,
+  "gpu": "NVIDIA GeForce RTX 5090 32 GB",
+  "driver": "595.95"
+ },
+ "post_checks": {
+  "baseline_after_plug_vs_fresh_baseline": "decoded frames identical (81/81 frames, max abs diff 0); MP4 hashes differ only by embedded prompt metadata (filename prefix)",
+  "visual_review": "five extracted frames per video inspected by the maintainer (frames 0, n/4, n/2, 3n/4, n-1)"
+ },
+ "sessions": [
+  {
+   "server_session": "s1",
+   "tag": "s1_plug",
+   "environment": {
+    "comfyui_version": "0.38.0",
+    "python": "3.12.13",
+    "pytorch": "2.14.1+cu130",
+    "devices": [
+     {
+      "name": "cuda:0 NVIDIA GeForce RTX 5090 : cudaMallocAsync",
+      "vram_total": 34190458880
+     }
+    ],
+    "benchmark_probe": true
+   },
+   "runs": [
+    {
+     "label": "longlive_plug_4step",
+     "status": "success",
+     "prompt_id": "94f43f2b-b24a-4398-8d42-30551b460e64",
+     "wall_total_s": 58.964,
+     "phases_s": {
+      "load_diffusion_model": 0.037,
+      "apply_adapters": 4.64,
+      "other": 0.005,
+      "load_text_encoder": 0.402,
+      "text_encode": 3.051,
+      "recipe": 0.005,
+      "load_vae": 0.014,
+      "sampler": 41.312,
+      "vae_decode": 8.872,
+      "save": 0.621
+     },
+     "nodes_cached": [],
+     "sampler": {
+      "steps_reported": 4,
+      "until_first_step_done_s": 13.354,
+      "after_first_step_s": 27.853,
+      "per_step_s": [
+       13.354,
+       9.099,
+       9.656,
+       9.098
+      ]
+     },
+     "probe": {
+      "sampler_evaluations": 4,
+      "cond_passes": 4,
+      "uncond_passes": 0,
+      "forward_calls": 4,
+      "forward_rows": 4,
+      "timesteps": [
+       999.0,
+       937.0,
+       833.0,
+       624.0
+      ],
+      "cuda": {
+       "max_allocated_bytes": 6453781850,
+       "max_reserved_bytes": 9730785280,
+       "allocated_bytes": 38266186,
+       "reserved_bytes": 100663296,
+       "device": "NVIDIA GeForce RTX 5090"
+      },
+      "torch": "2.14.1+cu130",
+      "torch_cuda": "13.0"
+     },
+     "nvidia_smi_total_used_mib": {
+      "max": 30768,
+      "min": 2470,
+      "samples": 65
+     },
+     "reports": {
+      "14": {
+       "node": "LongLivePlugRecipe",
+       "recipe": "wan21-14b-plug-4step-unipc",
+       "status": "official",
+       "source": "NVlabs/LongLive@fb16a879f46e604df4a0ca48ce2bf45adfa90352: LongLive-Plug/inference.py + configs/wan21_dmd.yaml (sampling_steps=4, guidance_scale=1.0, timestep_shift=5.0)",
+       "profile": "wan2.1-t2v-14b",
+       "requires_longlive_plug_adapters": true,
+       "solver": "flow_unipc",
+       "steps": 4,
+       "shift": 5.0,
+       "runtime_cfg_scale": 1.0,
+       "conditional_only": true,
+       "model_evaluations": 4,
+       "sigmas": [
+        0.9997998476028442,
+        0.9372654557228088,
+        0.8330553770065308,
+        0.6246873736381531,
+        0.0
+       ],
+       "model_timesteps": [
+        999.0,
+        937.0,
+        833.0,
+        624.0
+       ],
+       "timestep_handling": "int64-truncated sigma*1000 (as upstream)",
+       "note": "Primary recipe. Use with few-step LoRA 1.0 + CFG LoRA 0.5.",
+       "init_noise": "upstream",
+       "backbone_match": "exact",
+       "adapters": {
+        "profile": "wan2.1-t2v-14b",
+        "backbone_match": "exact",
+        "few_step_weight": 1.0,
+        "cfg_weight": 0.5,
+        "recipe_conformance": "official"
+       },
+       "negative_used": false
+      },
+      "15": {
+       "node": "LongLivePlugApplyAdapters",
+       "profile": "wan2.1-t2v-14b",
+       "backbone": {
+        "match": "exact",
+        "notes": []
+       },
+       "pre_existing_patched_weights": 0,
+       "adapters": [
+        {
+         "role": "few_step",
+         "file": "LongLive-Plug-Wan2.1-T2V-14B-few-step.safetensors",
+         "sha256": "743fc9a44e118a09f932ae5a0420c88b46bb6afdf605230f115e93eb710884ba",
+         "pinned_release": "Efficient-Large-Model/LongLive-Plug-Wan2.1-T2V-14B-few-step@f125af0533b94e2cee0163a7a42bb736d59a1d37/generator_lora_lightx2v.safetensors",
+         "key_format": "native",
+         "tensor_dtypes": [
+          "bfloat16"
+         ],
+         "lora_pairs": 400,
+         "rank": 128,
+         "alpha": 128.0,
+         "alpha_source": "safetensors_metadata+pinned_release",
+         "lora_weight": 1.0,
+         "effective_scale": 1.0,
+         "targets_expected": 400,
+         "targets_in_adapter": 400,
+         "targets_matched": 400,
+         "unused_adapter_keys": 0,
+         "shape_mismatches": 0,
+         "nonfinite_checked": true,
+         "patches_applied": 400,
+         "application_rate": 1.0
+        },
+        {
+         "role": "cfg",
+         "file": "LongLive-Plug-Wan2.1-T2V-14B-cfg.safetensors",
+         "sha256": "1a311f6030a74e739d9705347079a131bd5a5579bd693c993026d63e36d4bea0",
+         "pinned_release": "Efficient-Large-Model/LongLive-Plug-Wan2.1-T2V-14B-cfg@32b8aa3d1db3d178a9c82f3731cc917a34fb7693/adapter_model.safetensors",
+         "key_format": "peft",
+         "tensor_dtypes": [
+          "float32"
+         ],
+         "lora_pairs": 400,
+         "rank": 128,
+         "alpha": 128.0,
+         "alpha_source": "pinned_release",
+         "lora_weight": 0.5,
+         "effective_scale": 0.5,
+         "targets_expected": 400,
+         "targets_in_adapter": 400,
+         "targets_matched": 400,
+         "unused_adapter_keys": 0,
+         "shape_mismatches": 0,
+         "nonfinite_checked": true,
+         "patches_applied": 400,
+         "application_rate": 1.0
+        }
+       ],
+       "merge_rule": "W + sum_i weight_i * (alpha_i / rank_i) * B_i @ A_i, accumulated in float32, rounded to the base dtype",
+       "recipe_conformance": "official"
+      }
+     },
+     "video": {
+      "file": "longlive_plug_4step/s1_plug_longlive_plug_4step_00001_.mp4",
+      "sha256": "d3dee8a9f5d6722b60f1a83159ace1062862f8a98d8142faa627f0ce2365e2bc",
+      "bytes": 592990,
+      "codec": "h264",
+      "pix_fmt": "yuv420p",
+      "width": 832,
+      "height": 480,
+      "fps": 16.0,
+      "frames_decoded": 81,
+      "duration_s": 5.0625,
+      "full_decode_ok": true,
+      "extracted_frames": [
+       "frame_000.png",
+       "frame_020.png",
+       "frame_040.png",
+       "frame_060.png",
+       "frame_080.png"
+      ]
+     },
+     "variant": "longlive_plug_4step",
+     "recipe": "wan21-14b-plug-4step-unipc",
+     "seed": 20261002,
+     "size": {
+      "width": 832,
+      "height": 480,
+      "length": 81
+     },
+     "fps": 16.0,
+     "repeat_index": 0
+    },
+    {
+     "label": "longlive_plug_4step_run2",
+     "status": "success",
+     "prompt_id": "f7c66c22-05be-4fff-b02b-2084658ec95c",
+     "wall_total_s": 44.5,
+     "phases_s": {
+      "other": 0.001,
+      "sampler": 37.838,
+      "vae_decode": 6.039,
+      "save": 0.584
+     },
+     "nodes_cached": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "6",
+      "8",
+      "9",
+      "14",
+      "15"
+     ],
+     "sampler": {
+      "steps_reported": 4,
+      "until_first_step_done_s": 9.681,
+      "after_first_step_s": 28.053,
+      "per_step_s": [
+       9.681,
+       9.423,
+       9.153,
+       9.477
+      ]
+     },
+     "probe": {
+      "sampler_evaluations": 4,
+      "cond_passes": 4,
+      "uncond_passes": 0,
+      "forward_calls": 4,
+      "forward_rows": 4,
+      "timesteps": [
+       999.0,
+       937.0,
+       833.0,
+       624.0
+      ],
+      "cuda": {
+       "max_allocated_bytes": 6453781850,
+       "max_reserved_bytes": 9294577664,
+       "allocated_bytes": 38266186,
+       "reserved_bytes": 100663296,
+       "device": "NVIDIA GeForce RTX 5090"
+      },
+      "torch": "2.14.1+cu130",
+      "torch_cuda": "13.0"
+     },
+     "nvidia_smi_total_used_mib": {
+      "max": 30704,
+      "min": 20688,
+      "samples": 52
+     },
+     "reports": {
+      "14": {
+       "node": "LongLivePlugRecipe",
+       "recipe": "wan21-14b-plug-4step-unipc",
+       "status": "official",
+       "source": "NVlabs/LongLive@fb16a879f46e604df4a0ca48ce2bf45adfa90352: LongLive-Plug/inference.py + configs/wan21_dmd.yaml (sampling_steps=4, guidance_scale=1.0, timestep_shift=5.0)",
+       "profile": "wan2.1-t2v-14b",
+       "requires_longlive_plug_adapters": true,
+       "solver": "flow_unipc",
+       "steps": 4,
+       "shift": 5.0,
+       "runtime_cfg_scale": 1.0,
+       "conditional_only": true,
+       "model_evaluations": 4,
+       "sigmas": [
+        0.9997998476028442,
+        0.9372654557228088,
+        0.8330553770065308,
+        0.6246873736381531,
+        0.0
+       ],
+       "model_timesteps": [
+        999.0,
+        937.0,
+        833.0,
+        624.0
+       ],
+       "timestep_handling": "int64-truncated sigma*1000 (as upstream)",
+       "note": "Primary recipe. Use with few-step LoRA 1.0 + CFG LoRA 0.5.",
+       "init_noise": "upstream",
+       "backbone_match": "exact",
+       "adapters": {
+        "profile": "wan2.1-t2v-14b",
+        "backbone_match": "exact",
+        "few_step_weight": 1.0,
+        "cfg_weight": 0.5,
+        "recipe_conformance": "official"
+       },
+       "negative_used": false
+      },
+      "15": {
+       "node": "LongLivePlugApplyAdapters",
+       "profile": "wan2.1-t2v-14b",
+       "backbone": {
+        "match": "exact",
+        "notes": []
+       },
+       "pre_existing_patched_weights": 0,
+       "adapters": [
+        {
+         "role": "few_step",
+         "file": "LongLive-Plug-Wan2.1-T2V-14B-few-step.safetensors",
+         "sha256": "743fc9a44e118a09f932ae5a0420c88b46bb6afdf605230f115e93eb710884ba",
+         "pinned_release": "Efficient-Large-Model/LongLive-Plug-Wan2.1-T2V-14B-few-step@f125af0533b94e2cee0163a7a42bb736d59a1d37/generator_lora_lightx2v.safetensors",
+         "key_format": "native",
+         "tensor_dtypes": [
+          "bfloat16"
+         ],
+         "lora_pairs": 400,
+         "rank": 128,
+         "alpha": 128.0,
+         "alpha_source": "safetensors_metadata+pinned_release",
+         "lora_weight": 1.0,
+         "effective_scale": 1.0,
+         "targets_expected": 400,
+         "targets_in_adapter": 400,
+         "targets_matched": 400,
+         "unused_adapter_keys": 0,
+         "shape_mismatches": 0,
+         "nonfinite_checked": true,
+         "patches_applied": 400,
+         "application_rate": 1.0
+        },
+        {
+         "role": "cfg",
+         "file": "LongLive-Plug-Wan2.1-T2V-14B-cfg.safetensors",
+         "sha256": "1a311f6030a74e739d9705347079a131bd5a5579bd693c993026d63e36d4bea0",
+         "pinned_release": "Efficient-Large-Model/LongLive-Plug-Wan2.1-T2V-14B-cfg@32b8aa3d1db3d178a9c82f3731cc917a34fb7693/adapter_model.safetensors",
+         "key_format": "peft",
+         "tensor_dtypes": [
+          "float32"
+         ],
+         "lora_pairs": 400,
+         "rank": 128,
+         "alpha": 128.0,
+         "alpha_source": "pinned_release",
+         "lora_weight": 0.5,
+         "effective_scale": 0.5,
+         "targets_expected": 400,
+         "targets_in_adapter": 400,
+         "targets_matched": 400,
+         "unused_adapter_keys": 0,
+         "shape_mismatches": 0,
+         "nonfinite_checked": true,
+         "patches_applied": 400,
+         "application_rate": 1.0
+        }
+       ],
+       "merge_rule": "W + sum_i weight_i * (alpha_i / rank_i) * B_i @ A_i, accumulated in float32, rounded to the base dtype",
+       "recipe_conformance": "official"
+      }
+     },
+     "video": {
+      "file": "longlive_plug_4step_run2/s1_plug_longlive_plug_4step_run2_00001_.mp4",
+      "sha256": "04ca279c97cdd8dcda33ba2ccf275169dd29031fde0156ef8e805312d5f8f07b",
+      "bytes": 590960,
+      "codec": "h264",
+      "pix_fmt": "yuv420p",
+      "width": 832,
+      "height": 480,
+      "fps": 16.0,
+      "frames_decoded": 81,
+      "duration_s": 5.0625,
+      "full_decode_ok": true,
+      "extracted_frames": [
+       "frame_000.png",
+       "frame_020.png",
+       "frame_040.png",
+       "frame_060.png",
+       "frame_080.png"
+      ]
+     },
+     "variant": "longlive_plug_4step",
+     "recipe": "wan21-14b-plug-4step-unipc",
+     "seed": 20261003,
+     "size": {
+      "width": 832,
+      "height": 480,
+      "length": 81
+     },
+     "fps": 16.0,
+     "repeat_index": 1
+    }
+   ]
+  },
+  {
+   "server_session": "s1",
+   "tag": "s1_base_after_plug",
+   "environment": {
+    "comfyui_version": "0.38.0",
+    "python": "3.12.13",
+    "pytorch": "2.14.1+cu130",
+    "devices": [
+     {
+      "name": "cuda:0 NVIDIA GeForce RTX 5090 : cudaMallocAsync",
+      "vram_total": 34190458880
+     }
+    ],
+    "benchmark_probe": true
+   },
+   "runs": [
+    {
+     "label": "baseline_50step",
+     "status": "success",
+     "prompt_id": "05aa7821-9b41-410c-9544-904551eb1969",
+     "wall_total_s": 942.968,
+     "phases_s": {
+      "text_encode": 2.83,
+      "recipe": 0.007,
+      "other": 0.001,
+      "sampler": 933.607,
+      "vae_decode": 5.955,
+      "save": 0.563
+     },
+     "nodes_cached": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "6"
+     ],
+     "sampler": {
+      "steps_reported": 50,
+      "until_first_step_done_s": 24.856,
+      "after_first_step_s": 908.658,
+      "per_step_s": [
+       24.856,
+       18.685,
+       18.511,
+       18.535,
+       18.21,
+       18.565,
+       18.471,
+       18.378,
+       18.482,
+       19.176,
+       18.985,
+       18.678,
+       18.421,
+       18.429,
+       18.581,
+       18.405,
+       18.298,
+       18.317,
+       18.636,
+       18.637,
+       19.235,
+       19.928,
+       18.957,
+       18.149,
+       18.549,
+       18.709,
+       18.553,
+       18.646,
+       18.608,
+       18.69,
+       18.485,
+       18.295,
+       18.526,
+       18.326,
+       18.663,
+       18.348,
+       18.332,
+       18.389,
+       18.423,
+       18.542,
+       18.399,
+       18.294,
+       18.453,
+       18.385,
+       18.644,
+       18.346,
+       18.44,
+       18.272,
+       18.237,
+       18.435
+      ]
+     },
+     "probe": {
+      "sampler_evaluations": 50,
+      "cond_passes": 50,
+      "uncond_passes": 50,
+      "forward_calls": 50,
+      "forward_rows": 100,
+      "timesteps": [
+       999.0,
+       995.0,
+       991.0,
+       987.0,
+       982.0,
+       978.0,
+       973.0,
+       968.0,
+       963.0,
+       957.0,
+       952.0,
+       946.0,
+       940.0,
+       934.0,
+       927.0,
+       920.0,
+       913.0,
+       906.0,
+       898.0,
+       890.0,
+       882.0,
+       873.0,
+       863.0,
+       854.0,
+       843.0,
+       833.0,
+       821.0,
+       809.0,
+       796.0,
+       783.0,
+       768.0,
+       753.0,
+       737.0,
+       720.0,
+       701.0,
+       681.0,
+       660.0,
+       636.0,
+       611.0,
+       584.0,
+       555.0,
+       522.0,
+       487.0,
+       448.0,
+       405.0,
+       356.0,
+       302.0,
+       241.0,
+       172.0,
+       92.0
+      ],
+      "cuda": {
+       "max_allocated_bytes": 6548604462,
+       "max_reserved_bytes": 9026142208,
+       "allocated_bytes": 38266186,
+       "reserved_bytes": 100663296,
+       "device": "NVIDIA GeForce RTX 5090"
+      },
+      "torch": "2.14.1+cu130",
+      "torch_cuda": "13.0"
+     },
+     "nvidia_smi_total_used_mib": {
+      "max": 30928,
+      "min": 17776,
+      "samples": 1001
+     },
+     "reports": {
+      "14": {
+       "node": "LongLivePlugRecipe",
+       "recipe": "wan21-14b-base-50step-unipc-cfg5",
+       "status": "official",
+       "source": "Wan-Video/Wan2.1@9737cba9c1c3c4d04b33fcad41c111989865d315: generate.py t2v-14B defaults (sample_solver=unipc, sample_steps=50, sample_shift=5.0, sample_guide_scale=5.0)",
+       "profile": "wan2.1-t2v-14b",
+       "requires_longlive_plug_adapters": false,
+       "solver": "flow_unipc",
+       "steps": 50,
+       "shift": 5.0,
+       "runtime_cfg_scale": 5.0,
+       "conditional_only": false,
+       "model_evaluations": 100,
+       "sigmas": [
+        0.9997998476028442,
+        0.9957323670387268,
+        0.9915304780006409,
+        0.987187385559082,
+        0.9826958179473877,
+        0.9780480265617371,
+        0.9732357859611511,
+        0.9682501554489136,
+        0.9630816578865051,
+        0.9577199220657349,
+        0.9521540403366089,
+        0.9463720321655273,
+        0.9403610825538635,
+        0.9341073036193848,
+        0.9275957345962524,
+        0.9208101034164429,
+        0.913732647895813,
+        0.9063441753387451,
+        0.8986237049102783,
+        0.8905484676361084,
+        0.8820932507514954,
+        0.8732306957244873,
+        0.8639306426048279,
+        0.8541598320007324,
+        0.8438816070556641,
+        0.8330553770065308,
+        0.8216361403465271,
+        0.8095738291740417,
+        0.7968124747276306,
+        0.7832895517349243,
+        0.7689347267150879,
+        0.7536689043045044,
+        0.7374023795127869,
+        0.720033586025238,
+        0.7014464139938354,
+        0.6815081238746643,
+        0.6600657105445862,
+        0.6369423866271973,
+        0.6119323968887329,
+        0.5847949981689453,
+        0.5552467703819275,
+        0.5229514837265015,
+        0.48750731348991394,
+        0.44843021035194397,
+        0.40513139963150024,
+        0.35688769817352295,
+        0.3028006851673126,
+        0.24174034595489502,
+        0.17226514220237732,
+        0.09250685572624207,
+        0.0
+       ],
+       "model_timesteps": [
+        999.0,
+        995.0,
+        991.0,
+        987.0,
+        982.0,
+        978.0,
+        973.0,
+        968.0,
+        963.0,
+        957.0,
+        952.0,
+        946.0,
+        940.0,
+        934.0,
+        927.0,
+        920.0,
+        913.0,
+        906.0,
+        898.0,
+        890.0,
+        882.0,
+        873.0,
+        863.0,
+        854.0,
+        843.0,
+        833.0,
+        821.0,
+        809.0,
+        796.0,
+        783.0,
+        768.0,
+        753.0,
+        737.0,
+        720.0,
+        701.0,
+        681.0,
+        660.0,
+        636.0,
+        611.0,
+        584.0,
+        555.0,
+        522.0,
+        487.0,
+        448.0,
+        405.0,
+        356.0,
+        302.0,
+        241.0,
+        172.0,
+        92.0
+       ],
+       "timestep_handling": "int64-truncated sigma*1000 (as upstream)",
+       "note": "Baseline. Use Wan's default negative prompt.",
+       "init_noise": "upstream",
+       "backbone_match": "exact",
+       "adapters": null,
+       "negative_used": true
+      }
+     },
+     "video": {
+      "file": "baseline_50step/s1_base_after_plug_baseline_50step_00001_.mp4",
+      "sha256": "b4e10648df05d729bdfab8d8d81badbe3ed230103e203e9eb9126588bdb87590",
+      "bytes": 405226,
+      "codec": "h264",
+      "pix_fmt": "yuv420p",
+      "width": 832,
+      "height": 480,
+      "fps": 16.0,
+      "frames_decoded": 81,
+      "duration_s": 5.0625,
+      "full_decode_ok": true,
+      "extracted_frames": [
+       "frame_000.png",
+       "frame_020.png",
+       "frame_040.png",
+       "frame_060.png",
+       "frame_080.png"
+      ]
+     },
+     "variant": "baseline_50step",
+     "recipe": "wan21-14b-base-50step-unipc-cfg5",
+     "seed": 20261002,
+     "size": {
+      "width": 832,
+      "height": 480,
+      "length": 81
+     },
+     "fps": 16.0,
+     "repeat_index": 0
+    }
+   ]
+  },
+  {
+   "server_session": "s1",
+   "tag": "s1_naive",
+   "environment": {
+    "comfyui_version": "0.38.0",
+    "python": "3.12.13",
+    "pytorch": "2.14.1+cu130",
+    "devices": [
+     {
+      "name": "cuda:0 NVIDIA GeForce RTX 5090 : cudaMallocAsync",
+      "vram_total": 34190458880
+     }
+    ],
+    "benchmark_probe": true
+   },
+   "runs": [
+    {
+     "label": "naive_4step",
+     "status": "success",
+     "prompt_id": "a7c61efd-05e5-45a0-9874-8a49c716dbe1",
+     "wall_total_s": 84.913,
+     "phases_s": {
+      "recipe": 0.034,
+      "other": 0.001,
+      "sampler": 78.242,
+      "vae_decode": 6.105,
+      "save": 0.527
+     },
+     "nodes_cached": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7"
+     ],
+     "sampler": {
+      "steps_reported": 4,
+      "until_first_step_done_s": 18.195,
+      "after_first_step_s": 59.946,
+      "per_step_s": [
+       18.195,
+       23.264,
+       18.255,
+       18.427
+      ]
+     },
+     "probe": {
+      "sampler_evaluations": 4,
+      "cond_passes": 4,
+      "uncond_passes": 4,
+      "forward_calls": 4,
+      "forward_rows": 8,
+      "timesteps": [
+       999.0,
+       937.0,
+       833.0,
+       624.0
+      ],
+      "cuda": {
+       "max_allocated_bytes": 6548604278,
+       "max_reserved_bytes": 9126805504,
+       "allocated_bytes": 38266186,
+       "reserved_bytes": 100663296,
+       "device": "NVIDIA GeForce RTX 5090"
+      },
+      "torch": "2.14.1+cu130",
+      "torch_cuda": "13.0"
+     },
+     "nvidia_smi_total_used_mib": {
+      "max": 31721,
+      "min": 17872,
+      "samples": 95
+     },
+     "reports": {
+      "14": {
+       "node": "LongLivePlugRecipe",
+       "recipe": "wan21-14b-base-4step-unipc-cfg5-naive",
+       "status": "comparison",
+       "source": "Not an upstream recipe: the official base recipe with steps reduced to 4.",
+       "profile": "wan2.1-t2v-14b",
+       "requires_longlive_plug_adapters": false,
+       "solver": "flow_unipc",
+       "steps": 4,
+       "shift": 5.0,
+       "runtime_cfg_scale": 5.0,
+       "conditional_only": false,
+       "model_evaluations": 8,
+       "sigmas": [
+        0.9997998476028442,
+        0.9372654557228088,
+        0.8330553770065308,
+        0.6246873736381531,
+        0.0
+       ],
+       "model_timesteps": [
+        999.0,
+        937.0,
+        833.0,
+        624.0
+       ],
+       "timestep_handling": "int64-truncated sigma*1000 (as upstream)",
+       "note": "Shows what step reduction alone does without the adapters.",
+       "init_noise": "upstream",
+       "backbone_match": "exact",
+       "adapters": null,
+       "negative_used": true
+      }
+     },
+     "video": {
+      "file": "naive_4step/s1_naive_naive_4step_00001_.mp4",
+      "sha256": "c3af4e517f4083a8aa3b2b25c50995069dd072d64012029b5893403e19c30097",
+      "bytes": 290297,
+      "codec": "h264",
+      "pix_fmt": "yuv420p",
+      "width": 832,
+      "height": 480,
+      "fps": 16.0,
+      "frames_decoded": 81,
+      "duration_s": 5.0625,
+      "full_decode_ok": true,
+      "extracted_frames": [
+       "frame_000.png",
+       "frame_020.png",
+       "frame_040.png",
+       "frame_060.png",
+       "frame_080.png"
+      ]
+     },
+     "variant": "naive_4step",
+     "recipe": "wan21-14b-base-4step-unipc-cfg5-naive",
+     "seed": 20261002,
+     "size": {
+      "width": 832,
+      "height": 480,
+      "length": 81
+     },
+     "fps": 16.0,
+     "repeat_index": 0
+    }
+   ]
+  },
+  {
+   "server_session": "s2",
+   "tag": "s2_base_cold",
+   "environment": {
+    "comfyui_version": "0.38.0",
+    "python": "3.12.13",
+    "pytorch": "2.14.1+cu130",
+    "devices": [
+     {
+      "name": "cuda:0 NVIDIA GeForce RTX 5090 : cudaMallocAsync",
+      "vram_total": 34190458880
+     }
+    ],
+    "benchmark_probe": true
+   },
+   "runs": [
+    {
+     "label": "baseline_50step",
+     "status": "success",
+     "prompt_id": "617c17df-fcb7-4d62-9d8c-36a70b54472a",
+     "wall_total_s": 943.477,
+     "phases_s": {
+      "load_diffusion_model": 0.035,
+      "load_vae": 0.014,
+      "other": 0.009,
+      "load_text_encoder": 0.404,
+      "text_encode": 3.827,
+      "recipe": 0.006,
+      "sampler": 932.233,
+      "vae_decode": 6.224,
+      "save": 0.719
+     },
+     "nodes_cached": [],
+     "sampler": {
+      "steps_reported": 50,
+      "until_first_step_done_s": 25.75,
+      "after_first_step_s": 906.38,
+      "per_step_s": [
+       25.75,
+       18.479,
+       18.411,
+       18.465,
+       18.464,
+       18.324,
+       18.24,
+       18.24,
+       18.606,
+       18.686,
+       18.37,
+       18.388,
+       18.336,
+       18.501,
+       18.363,
+       18.431,
+       18.872,
+       18.754,
+       18.654,
+       18.289,
+       18.627,
+       18.533,
+       18.379,
+       18.643,
+       18.841,
+       18.696,
+       18.502,
+       18.469,
+       18.583,
+       18.325,
+       18.46,
+       18.486,
+       18.435,
+       18.372,
+       18.545,
+       18.576,
+       18.392,
+       18.506,
+       18.595,
+       18.596,
+       18.493,
+       18.547,
+       18.508,
+       18.42,
+       18.588,
+       18.433,
+       18.557,
+       18.469,
+       18.526,
+       18.405
+      ]
+     },
+     "probe": {
+      "sampler_evaluations": 50,
+      "cond_passes": 50,
+      "uncond_passes": 50,
+      "forward_calls": 50,
+      "forward_rows": 100,
+      "timesteps": [
+       999.0,
+       995.0,
+       991.0,
+       987.0,
+       982.0,
+       978.0,
+       973.0,
+       968.0,
+       963.0,
+       957.0,
+       952.0,
+       946.0,
+       940.0,
+       934.0,
+       927.0,
+       920.0,
+       913.0,
+       906.0,
+       898.0,
+       890.0,
+       882.0,
+       873.0,
+       863.0,
+       854.0,
+       843.0,
+       833.0,
+       821.0,
+       809.0,
+       796.0,
+       783.0,
+       768.0,
+       753.0,
+       737.0,
+       720.0,
+       701.0,
+       681.0,
+       660.0,
+       636.0,
+       611.0,
+       584.0,
+       555.0,
+       522.0,
+       487.0,
+       448.0,
+       405.0,
+       356.0,
+       302.0,
+       241.0,
+       172.0,
+       92.0
+      ],
+      "cuda": {
+       "max_allocated_bytes": 6548512904,
+       "max_reserved_bytes": 8522825728,
+       "allocated_bytes": 38266186,
+       "reserved_bytes": 100663296,
+       "device": "NVIDIA GeForce RTX 5090"
+      },
+      "torch": "2.14.1+cu130",
+      "torch_cuda": "13.0"
+     },
+     "nvidia_smi_total_used_mib": {
+      "max": 30473,
+      "min": 2940,
+      "samples": 1103
+     },
+     "reports": {
+      "14": {
+       "node": "LongLivePlugRecipe",
+       "recipe": "wan21-14b-base-50step-unipc-cfg5",
+       "status": "official",
+       "source": "Wan-Video/Wan2.1@9737cba9c1c3c4d04b33fcad41c111989865d315: generate.py t2v-14B defaults (sample_solver=unipc, sample_steps=50, sample_shift=5.0, sample_guide_scale=5.0)",
+       "profile": "wan2.1-t2v-14b",
+       "requires_longlive_plug_adapters": false,
+       "solver": "flow_unipc",
+       "steps": 50,
+       "shift": 5.0,
+       "runtime_cfg_scale": 5.0,
+       "conditional_only": false,
+       "model_evaluations": 100,
+       "sigmas": [
+        0.9997998476028442,
+        0.9957323670387268,
+        0.9915304780006409,
+        0.987187385559082,
+        0.9826958179473877,
+        0.9780480265617371,
+        0.9732357859611511,
+        0.9682501554489136,
+        0.9630816578865051,
+        0.9577199220657349,
+        0.9521540403366089,
+        0.9463720321655273,
+        0.9403610825538635,
+        0.9341073036193848,
+        0.9275957345962524,
+        0.9208101034164429,
+        0.913732647895813,
+        0.9063441753387451,
+        0.8986237049102783,
+        0.8905484676361084,
+        0.8820932507514954,
+        0.8732306957244873,
+        0.8639306426048279,
+        0.8541598320007324,
+        0.8438816070556641,
+        0.8330553770065308,
+        0.8216361403465271,
+        0.8095738291740417,
+        0.7968124747276306,
+        0.7832895517349243,
+        0.7689347267150879,
+        0.7536689043045044,
+        0.7374023795127869,
+        0.720033586025238,
+        0.7014464139938354,
+        0.6815081238746643,
+        0.6600657105445862,
+        0.6369423866271973,
+        0.6119323968887329,
+        0.5847949981689453,
+        0.5552467703819275,
+        0.5229514837265015,
+        0.48750731348991394,
+        0.44843021035194397,
+        0.40513139963150024,
+        0.35688769817352295,
+        0.3028006851673126,
+        0.24174034595489502,
+        0.17226514220237732,
+        0.09250685572624207,
+        0.0
+       ],
+       "model_timesteps": [
+        999.0,
+        995.0,
+        991.0,
+        987.0,
+        982.0,
+        978.0,
+        973.0,
+        968.0,
+        963.0,
+        957.0,
+        952.0,
+        946.0,
+        940.0,
+        934.0,
+        927.0,
+        920.0,
+        913.0,
+        906.0,
+        898.0,
+        890.0,
+        882.0,
+        873.0,
+        863.0,
+        854.0,
+        843.0,
+        833.0,
+        821.0,
+        809.0,
+        796.0,
+        783.0,
+        768.0,
+        753.0,
+        737.0,
+        720.0,
+        701.0,
+        681.0,
+        660.0,
+        636.0,
+        611.0,
+        584.0,
+        555.0,
+        522.0,
+        487.0,
+        448.0,
+        405.0,
+        356.0,
+        302.0,
+        241.0,
+        172.0,
+        92.0
+       ],
+       "timestep_handling": "int64-truncated sigma*1000 (as upstream)",
+       "note": "Baseline. Use Wan's default negative prompt.",
+       "init_noise": "upstream",
+       "backbone_match": "exact",
+       "adapters": null,
+       "negative_used": true
+      }
+     },
+     "video": {
+      "file": "baseline_50step/s2_base_cold_baseline_50step_00001_.mp4",
+      "sha256": "d44697a2baeb4cbf92489f12bd61e7b504b294d63c413ff2f8ac8d48a8b04c2f",
+      "bytes": 405331,
+      "codec": "h264",
+      "pix_fmt": "yuv420p",
+      "width": 832,
+      "height": 480,
+      "fps": 16.0,
+      "frames_decoded": 81,
+      "duration_s": 5.0625,
+      "full_decode_ok": true,
+      "extracted_frames": [
+       "frame_000.png",
+       "frame_020.png",
+       "frame_040.png",
+       "frame_060.png",
+       "frame_080.png"
+      ]
+     },
+     "variant": "baseline_50step",
+     "recipe": "wan21-14b-base-50step-unipc-cfg5",
+     "seed": 20261002,
+     "size": {
+      "width": 832,
+      "height": 480,
+      "length": 81
+     },
+     "fps": 16.0,
+     "repeat_index": 0
+    }
+   ]
+  },
+  {
+   "server_session": "s2",
+   "tag": "s2_alt_recipes",
+   "environment": {
+    "comfyui_version": "0.38.0",
+    "python": "3.12.13",
+    "pytorch": "2.14.1+cu130",
+    "devices": [
+     {
+      "name": "cuda:0 NVIDIA GeForce RTX 5090 : cudaMallocAsync",
+      "vram_total": 34190458880
+     }
+    ],
+    "benchmark_probe": true
+   },
+   "runs": [
+    {
+     "label": "longlive_plug_4step_euler",
+     "status": "success",
+     "prompt_id": "d5189834-2937-4e8c-86c0-2529020236d9",
+     "wall_total_s": 58.29,
+     "phases_s": {
+      "apply_adapters": 6.098,
+      "other": 0.002,
+      "recipe": 0.006,
+      "sampler": 44.632,
+      "vae_decode": 6.959,
+      "save": 0.587
+     },
+     "nodes_cached": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "6",
+      "7"
+     ],
+     "sampler": {
+      "steps_reported": 4,
+      "until_first_step_done_s": 16.344,
+      "after_first_step_s": 24.695,
+      "per_step_s": [
+       16.344,
+       4.002,
+       11.271,
+       9.422
+      ]
+     },
+     "probe": {
+      "sampler_evaluations": 4,
+      "cond_passes": 4,
+      "uncond_passes": 0,
+      "forward_calls": 4,
+      "forward_rows": 4,
+      "timesteps": [
+       1000.0,
+       937.5,
+       833.3333,
+       625.0
+      ],
+      "cuda": {
+       "max_allocated_bytes": 6453781850,
+       "max_reserved_bytes": 9428795392,
+       "allocated_bytes": 38266186,
+       "reserved_bytes": 100663296,
+       "device": "NVIDIA GeForce RTX 5090"
+      },
+      "torch": "2.14.1+cu130",
+      "torch_cuda": "13.0"
+     },
+     "nvidia_smi_total_used_mib": {
+      "max": 31449,
+      "min": 17785,
+      "samples": 63
+     },
+     "reports": {
+      "14": {
+       "node": "LongLivePlugRecipe",
+       "recipe": "wan21-14b-plug-4step-euler",
+       "status": "official",
+       "source": "Efficient-Large-Model/LongLive-Plug-Wan2.1-T2V-14B-few-step@f125af0533b94e2cee0163a7a42bb736d59a1d37: inference_config.json (denoising_step_list, sample_shift=5, enable_cfg=false); step rule from ModelTC/LightX2V@8a97c7591d7252ef491392e83e1eb18617ac9368 WanStepDistillScheduler",
+       "profile": "wan2.1-t2v-14b",
+       "requires_longlive_plug_adapters": true,
+       "solver": "euler",
+       "steps": 4,
+       "shift": 5.0,
+       "runtime_cfg_scale": 1.0,
+       "conditional_only": true,
+       "model_evaluations": 4,
+       "sigmas": [
+        1.0,
+        0.9375,
+        0.8333333134651184,
+        0.625,
+        0.0
+       ],
+       "model_timesteps": [
+        1000.0,
+        937.5,
+        833.3333134651184,
+        625.0
+       ],
+       "timestep_handling": "float32 sigma*1000 (as upstream)",
+       "note": "Alternative published with the few-step adapter for the LightX2V runtime.",
+       "init_noise": "sigma_0 = 1.0 (identical in both modes)",
+       "backbone_match": "exact",
+       "adapters": {
+        "profile": "wan2.1-t2v-14b",
+        "backbone_match": "exact",
+        "few_step_weight": 1.0,
+        "cfg_weight": 0.5,
+        "recipe_conformance": "official"
+       },
+       "negative_used": false
+      },
+      "15": {
+       "node": "LongLivePlugApplyAdapters",
+       "profile": "wan2.1-t2v-14b",
+       "backbone": {
+        "match": "exact",
+        "notes": []
+       },
+       "pre_existing_patched_weights": 0,
+       "adapters": [
+        {
+         "role": "few_step",
+         "file": "LongLive-Plug-Wan2.1-T2V-14B-few-step.safetensors",
+         "sha256": "743fc9a44e118a09f932ae5a0420c88b46bb6afdf605230f115e93eb710884ba",
+         "pinned_release": "Efficient-Large-Model/LongLive-Plug-Wan2.1-T2V-14B-few-step@f125af0533b94e2cee0163a7a42bb736d59a1d37/generator_lora_lightx2v.safetensors",
+         "key_format": "native",
+         "tensor_dtypes": [
+          "bfloat16"
+         ],
+         "lora_pairs": 400,
+         "rank": 128,
+         "alpha": 128.0,
+         "alpha_source": "safetensors_metadata+pinned_release",
+         "lora_weight": 1.0,
+         "effective_scale": 1.0,
+         "targets_expected": 400,
+         "targets_in_adapter": 400,
+         "targets_matched": 400,
+         "unused_adapter_keys": 0,
+         "shape_mismatches": 0,
+         "nonfinite_checked": true,
+         "patches_applied": 400,
+         "application_rate": 1.0
+        },
+        {
+         "role": "cfg",
+         "file": "LongLive-Plug-Wan2.1-T2V-14B-cfg.safetensors",
+         "sha256": "1a311f6030a74e739d9705347079a131bd5a5579bd693c993026d63e36d4bea0",
+         "pinned_release": "Efficient-Large-Model/LongLive-Plug-Wan2.1-T2V-14B-cfg@32b8aa3d1db3d178a9c82f3731cc917a34fb7693/adapter_model.safetensors",
+         "key_format": "peft",
+         "tensor_dtypes": [
+          "float32"
+         ],
+         "lora_pairs": 400,
+         "rank": 128,
+         "alpha": 128.0,
+         "alpha_source": "pinned_release",
+         "lora_weight": 0.5,
+         "effective_scale": 0.5,
+         "targets_expected": 400,
+         "targets_in_adapter": 400,
+         "targets_matched": 400,
+         "unused_adapter_keys": 0,
+         "shape_mismatches": 0,
+         "nonfinite_checked": true,
+         "patches_applied": 400,
+         "application_rate": 1.0
+        }
+       ],
+       "merge_rule": "W + sum_i weight_i * (alpha_i / rank_i) * B_i @ A_i, accumulated in float32, rounded to the base dtype",
+       "recipe_conformance": "official"
+      }
+     },
+     "video": {
+      "file": "longlive_plug_4step_euler/s2_alt_recipes_longlive_plug_4step_euler_00001_.mp4",
+      "sha256": "acb2837e05fe210bc29fbec1d0b5e8ad08d7e8af900b831697a29c4fd90c0479",
+      "bytes": 571037,
+      "codec": "h264",
+      "pix_fmt": "yuv420p",
+      "width": 832,
+      "height": 480,
+      "fps": 16.0,
+      "frames_decoded": 81,
+      "duration_s": 5.0625,
+      "full_decode_ok": true,
+      "extracted_frames": [
+       "frame_000.png",
+       "frame_020.png",
+       "frame_040.png",
+       "frame_060.png",
+       "frame_080.png"
+      ]
+     },
+     "variant": "longlive_plug_4step_euler",
+     "recipe": "wan21-14b-plug-4step-euler",
+     "seed": 20261002,
+     "size": {
+      "width": 832,
+      "height": 480,
+      "length": 81
+     },
+     "fps": 16.0,
+     "repeat_index": 0
+    },
+    {
+     "label": "longlive_plug_4step_lcm",
+     "status": "success",
+     "prompt_id": "ce3b4df2-b6b3-4367-ad51-ec41b482c41f",
+     "wall_total_s": 45.643,
+     "phases_s": {
+      "recipe": 0.005,
+      "other": 0.001,
+      "sampler": 38.396,
+      "vae_decode": 6.651,
+      "save": 0.553
+     },
+     "nodes_cached": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "6",
+      "7",
+      "8",
+      "15"
+     ],
+     "sampler": {
+      "steps_reported": 4,
+      "until_first_step_done_s": 10.027,
+      "after_first_step_s": 23.809,
+      "per_step_s": [
+       10.027,
+       3.828,
+       10.688,
+       9.293
+      ]
+     },
+     "probe": {
+      "sampler_evaluations": 4,
+      "cond_passes": 4,
+      "uncond_passes": 0,
+      "forward_calls": 4,
+      "forward_rows": 4,
+      "timesteps": [
+       1000.0,
+       937.5,
+       833.3333,
+       625.0
+      ],
+      "cuda": {
+       "max_allocated_bytes": 6453781850,
+       "max_reserved_bytes": 9495904256,
+       "allocated_bytes": 38266186,
+       "reserved_bytes": 100663296,
+       "device": "NVIDIA GeForce RTX 5090"
+      },
+      "torch": "2.14.1+cu130",
+      "torch_cuda": "13.0"
+     },
+     "nvidia_smi_total_used_mib": {
+      "max": 30841,
+      "min": 23401,
+      "samples": 54
+     },
+     "reports": {
+      "14": {
+       "node": "LongLivePlugRecipe",
+       "recipe": "wan21-14b-plug-4step-lcm",
+       "status": "official",
+       "source": "Efficient-Large-Model/LongLive-Plug-Wan2.1-T2V-14B-few-step@f125af0533b94e2cee0163a7a42bb736d59a1d37: training_config.yaml (Self-Forcing-Plus rollout: x0 prediction re-noised with fresh Gaussian noise at warped steps)",
+       "profile": "wan2.1-t2v-14b",
+       "requires_longlive_plug_adapters": true,
+       "solver": "lcm",
+       "steps": 4,
+       "shift": 5.0,
+       "runtime_cfg_scale": 1.0,
+       "conditional_only": true,
+       "model_evaluations": 4,
+       "sigmas": [
+        1.0,
+        0.9375,
+        0.8333333134651184,
+        0.625,
+        0.0
+       ],
+       "model_timesteps": [
+        1000.0,
+        937.5,
+        833.3333134651184,
+        625.0
+       ],
+       "timestep_handling": "float32 sigma*1000 (as upstream)",
+       "note": "Training-rollout parity; stochastic (re-noising draws depend on the seed).",
+       "init_noise": "sigma_0 = 1.0 (identical in both modes)",
+       "backbone_match": "exact",
+       "adapters": {
+        "profile": "wan2.1-t2v-14b",
+        "backbone_match": "exact",
+        "few_step_weight": 1.0,
+        "cfg_weight": 0.5,
+        "recipe_conformance": "official"
+       },
+       "negative_used": false
+      },
+      "15": {
+       "node": "LongLivePlugApplyAdapters",
+       "profile": "wan2.1-t2v-14b",
+       "backbone": {
+        "match": "exact",
+        "notes": []
+       },
+       "pre_existing_patched_weights": 0,
+       "adapters": [
+        {
+         "role": "few_step",
+         "file": "LongLive-Plug-Wan2.1-T2V-14B-few-step.safetensors",
+         "sha256": "743fc9a44e118a09f932ae5a0420c88b46bb6afdf605230f115e93eb710884ba",
+         "pinned_release": "Efficient-Large-Model/LongLive-Plug-Wan2.1-T2V-14B-few-step@f125af0533b94e2cee0163a7a42bb736d59a1d37/generator_lora_lightx2v.safetensors",
+         "key_format": "native",
+         "tensor_dtypes": [
+          "bfloat16"
+         ],
+         "lora_pairs": 400,
+         "rank": 128,
+         "alpha": 128.0,
+         "alpha_source": "safetensors_metadata+pinned_release",
+         "lora_weight": 1.0,
+         "effective_scale": 1.0,
+         "targets_expected": 400,
+         "targets_in_adapter": 400,
+         "targets_matched": 400,
+         "unused_adapter_keys": 0,
+         "shape_mismatches": 0,
+         "nonfinite_checked": true,
+         "patches_applied": 400,
+         "application_rate": 1.0
+        },
+        {
+         "role": "cfg",
+         "file": "LongLive-Plug-Wan2.1-T2V-14B-cfg.safetensors",
+         "sha256": "1a311f6030a74e739d9705347079a131bd5a5579bd693c993026d63e36d4bea0",
+         "pinned_release": "Efficient-Large-Model/LongLive-Plug-Wan2.1-T2V-14B-cfg@32b8aa3d1db3d178a9c82f3731cc917a34fb7693/adapter_model.safetensors",
+         "key_format": "peft",
+         "tensor_dtypes": [
+          "float32"
+         ],
+         "lora_pairs": 400,
+         "rank": 128,
+         "alpha": 128.0,
+         "alpha_source": "pinned_release",
+         "lora_weight": 0.5,
+         "effective_scale": 0.5,
+         "targets_expected": 400,
+         "targets_in_adapter": 400,
+         "targets_matched": 400,
+         "unused_adapter_keys": 0,
+         "shape_mismatches": 0,
+         "nonfinite_checked": true,
+         "patches_applied": 400,
+         "application_rate": 1.0
+        }
+       ],
+       "merge_rule": "W + sum_i weight_i * (alpha_i / rank_i) * B_i @ A_i, accumulated in float32, rounded to the base dtype",
+       "recipe_conformance": "official"
+      }
+     },
+     "video": {
+      "file": "longlive_plug_4step_lcm/s2_alt_recipes_longlive_plug_4step_lcm_00001_.mp4",
+      "sha256": "dcf3c81f6e201b4c2ce4b305d647c6556f93914226d25b47d57a806982e18ec1",
+      "bytes": 574648,
+      "codec": "h264",
+      "pix_fmt": "yuv420p",
+      "width": 832,
+      "height": 480,
+      "fps": 16.0,
+      "frames_decoded": 81,
+      "duration_s": 5.0625,
+      "full_decode_ok": true,
+      "extracted_frames": [
+       "frame_000.png",
+       "frame_020.png",
+       "frame_040.png",
+       "frame_060.png",
+       "frame_080.png"
+      ]
+     },
+     "variant": "longlive_plug_4step_lcm",
+     "recipe": "wan21-14b-plug-4step-lcm",
+     "seed": 20261002,
+     "size": {
+      "width": 832,
+      "height": 480,
+      "length": 81
+     },
+     "fps": 16.0,
+     "repeat_index": 0
+    }
+   ]
+  },
+  {
+   "server_session": "s2",
+   "tag": "s2_cancel",
+   "environment": {
+    "comfyui_version": "0.38.0",
+    "python": "3.12.13",
+    "pytorch": "2.14.1+cu130",
+    "devices": [
+     {
+      "name": "cuda:0 NVIDIA GeForce RTX 5090 : cudaMallocAsync",
+      "vram_total": 34190458880
+     }
+    ],
+    "benchmark_probe": true
+   },
+   "runs": [
+    {
+     "label": "longlive_plug_4step",
+     "status": "interrupted",
+     "prompt_id": "f154fae3-3e8d-41b3-86c3-a8b46c72d3b2",
+     "wall_total_s": 9.943,
+     "phases_s": {
+      "recipe": 0.005,
+      "other": 0.002,
+      "sampler": 9.904
+     },
+     "nodes_cached": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "6",
+      "8",
+      "15"
+     ],
+     "sampler": {
+      "steps_reported": 1,
+      "until_first_step_done_s": 9.837,
+      "after_first_step_s": 0.0,
+      "per_step_s": [
+       9.837
+      ]
+     },
+     "probe": {
+      "sampler_evaluations": 2,
+      "cond_passes": 2,
+      "uncond_passes": 0,
+      "forward_calls": 2,
+      "forward_rows": 2,
+      "timesteps": [
+       999.0,
+       937.0
+      ],
+      "cuda": {
+       "max_allocated_bytes": 3318594926,
+       "max_reserved_bytes": 3489660928,
+       "allocated_bytes": 193418606,
+       "reserved_bytes": 234881024,
+       "device": "NVIDIA GeForce RTX 5090"
+      },
+      "torch": "2.14.1+cu130",
+      "torch_cuda": "13.0"
+     },
+     "nvidia_smi_total_used_mib": {
+      "max": 30361,
+      "min": 25177,
+      "samples": 12
+     },
+     "reports": {
+      "14": {
+       "node": "LongLivePlugRecipe",
+       "recipe": "wan21-14b-plug-4step-unipc",
+       "status": "official",
+       "source": "NVlabs/LongLive@fb16a879f46e604df4a0ca48ce2bf45adfa90352: LongLive-Plug/inference.py + configs/wan21_dmd.yaml (sampling_steps=4, guidance_scale=1.0, timestep_shift=5.0)",
+       "profile": "wan2.1-t2v-14b",
+       "requires_longlive_plug_adapters": true,
+       "solver": "flow_unipc",
+       "steps": 4,
+       "shift": 5.0,
+       "runtime_cfg_scale": 1.0,
+       "conditional_only": true,
+       "model_evaluations": 4,
+       "sigmas": [
+        0.9997998476028442,
+        0.9372654557228088,
+        0.8330553770065308,
+        0.6246873736381531,
+        0.0
+       ],
+       "model_timesteps": [
+        999.0,
+        937.0,
+        833.0,
+        624.0
+       ],
+       "timestep_handling": "int64-truncated sigma*1000 (as upstream)",
+       "note": "Primary recipe. Use with few-step LoRA 1.0 + CFG LoRA 0.5.",
+       "init_noise": "upstream",
+       "backbone_match": "exact",
+       "adapters": {
+        "profile": "wan2.1-t2v-14b",
+        "backbone_match": "exact",
+        "few_step_weight": 1.0,
+        "cfg_weight": 0.5,
+        "recipe_conformance": "official"
+       },
+       "negative_used": false
+      },
+      "15": {
+       "node": "LongLivePlugApplyAdapters",
+       "profile": "wan2.1-t2v-14b",
+       "backbone": {
+        "match": "exact",
+        "notes": []
+       },
+       "pre_existing_patched_weights": 0,
+       "adapters": [
+        {
+         "role": "few_step",
+         "file": "LongLive-Plug-Wan2.1-T2V-14B-few-step.safetensors",
+         "sha256": "743fc9a44e118a09f932ae5a0420c88b46bb6afdf605230f115e93eb710884ba",
+         "pinned_release": "Efficient-Large-Model/LongLive-Plug-Wan2.1-T2V-14B-few-step@f125af0533b94e2cee0163a7a42bb736d59a1d37/generator_lora_lightx2v.safetensors",
+         "key_format": "native",
+         "tensor_dtypes": [
+          "bfloat16"
+         ],
+         "lora_pairs": 400,
+         "rank": 128,
+         "alpha": 128.0,
+         "alpha_source": "safetensors_metadata+pinned_release",
+         "lora_weight": 1.0,
+         "effective_scale": 1.0,
+         "targets_expected": 400,
+         "targets_in_adapter": 400,
+         "targets_matched": 400,
+         "unused_adapter_keys": 0,
+         "shape_mismatches": 0,
+         "nonfinite_checked": true,
+         "patches_applied": 400,
+         "application_rate": 1.0
+        },
+        {
+         "role": "cfg",
+         "file": "LongLive-Plug-Wan2.1-T2V-14B-cfg.safetensors",
+         "sha256": "1a311f6030a74e739d9705347079a131bd5a5579bd693c993026d63e36d4bea0",
+         "pinned_release": "Efficient-Large-Model/LongLive-Plug-Wan2.1-T2V-14B-cfg@32b8aa3d1db3d178a9c82f3731cc917a34fb7693/adapter_model.safetensors",
+         "key_format": "peft",
+         "tensor_dtypes": [
+          "float32"
+         ],
+         "lora_pairs": 400,
+         "rank": 128,
+         "alpha": 128.0,
+         "alpha_source": "pinned_release",
+         "lora_weight": 0.5,
+         "effective_scale": 0.5,
+         "targets_expected": 400,
+         "targets_in_adapter": 400,
+         "targets_matched": 400,
+         "unused_adapter_keys": 0,
+         "shape_mismatches": 0,
+         "nonfinite_checked": true,
+         "patches_applied": 400,
+         "application_rate": 1.0
+        }
+       ],
+       "merge_rule": "W + sum_i weight_i * (alpha_i / rank_i) * B_i @ A_i, accumulated in float32, rounded to the base dtype",
+       "recipe_conformance": "official"
+      }
+     },
+     "variant": "longlive_plug_4step",
+     "recipe": "wan21-14b-plug-4step-unipc",
+     "seed": 20261099,
+     "size": {
+      "width": 832,
+      "height": 480,
+      "length": 81
+     },
+     "fps": 16.0,
+     "repeat_index": 0
+    }
+   ]
+  }
+ ]
+}

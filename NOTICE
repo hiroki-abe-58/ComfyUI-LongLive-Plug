@@ -1,0 +1,15 @@
+ComfyUI-LongLive-Plug
+Copyright 2026 hiroki-abe-58
+
+This product is an unofficial community integration. It is not affiliated
+with or endorsed by NVIDIA, Alibaba (Wan), Hugging Face or Comfy Org.
+
+longlive_plug/flow_unipc.py adapts the UniPC predictor/corrector arithmetic of
+FlowUniPCMultistepScheduler from Wan2.1 (wan/utils/fm_solvers_unipc.py),
+  Copyright 2024-2025 The Alibaba Wan Team Authors, Apache License 2.0,
+which is itself adapted from diffusers (schedulers/scheduling_unipc_multistep.py),
+  Copyright 2024 The HuggingFace Team, Apache License 2.0.
+
+The same scheduler file is vendored by NVlabs/LongLive
+(LongLive-Plug/wan_5b/utils/fm_solvers_unipc.py, Apache License 2.0), whose
+LongLive-Plug adapters this package applies. See docs/LICENSING.md.
