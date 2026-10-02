@@ -8,6 +8,7 @@ tests/
 .github/
 .gitignore
 .comfyignore
+.gitattributes
 
 # Maintainer / benchmark tooling (not imported by the node; some scripts call
 # ffmpeg, nvidia-smi or a browser, and the benchmark probe patches ComfyUI
