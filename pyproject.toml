@@ -1,21 +1,32 @@
 [project]
-name = "comfyui-longlive-plug"
+# Comfy Registry node id: immutable once published.
+name = "longlive-plug"
 version = "0.1.0"
-description = "Unofficial ComfyUI integration of NVlabs LongLive-Plug few-step/CFG LoRA adapters for Wan2.1-T2V-14B, with key-coverage checks and upstream-verified sampling recipes."
+description = "Unofficial community integration, not affiliated with NVIDIA: applies the NVlabs LongLive-Plug Few-Step/CFG LoRA adapters to Wan2.1-T2V-14B in ComfyUI with key-coverage checks and upstream-verified 4-step sampling recipes."
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.10"
 dependencies = []
+# Only what was tested with real weights: Windows 11 + NVIDIA RTX 5090.
+# Linux passes the model-free CI but has no real-weight run (see README).
+classifiers = [
+    "Operating System :: Microsoft :: Windows",
+    "Environment :: GPU :: NVIDIA CUDA",
+]
 
 [project.urls]
 Repository = "https://github.com/hiroki-abe-58/ComfyUI-LongLive-Plug"
-"Bug Tracker" = "https://github.com/hiroki-abe-58/ComfyUI-LongLive-Plug/issues"
+Issues = "https://github.com/hiroki-abe-58/ComfyUI-LongLive-Plug/issues"
+Documentation = "https://github.com/hiroki-abe-58/ComfyUI-LongLive-Plug#readme"
+Upstream = "https://github.com/NVlabs/LongLive"
 
 [tool.comfy]
-PublisherId = ""
-DisplayName = "ComfyUI-LongLive-Plug"
+PublisherId = "hiroki-abe-58"
+DisplayName = "LongLive-Plug for ComfyUI"
 Icon = ""
 includes = []
+# Tested with ComfyUI v0.38.0 only; older versions are not verified.
+requires-comfyui = ">=0.38.0"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

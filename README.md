@@ -172,6 +172,10 @@ python -m ruff check . && python -m ruff format --check .
 Tests marked `comfy` fail (they do not skip) when `COMFYUI_PATH` is missing.
 CI runs everything on Ubuntu and Windows without model weights.
 
+The Comfy Registry package contains the node, the workflows and the docs.
+Tests, maintainer scripts and the benchmark probe are excluded via
+`.comfyignore` and are only in this repository.
+
 ## License
 
 Apache-2.0 for this repository. Upstream code, adapters and models keep their

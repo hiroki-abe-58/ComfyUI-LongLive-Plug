@@ -41,6 +41,10 @@ separators, so the shipped workflows expect the files at the `loras` root.
 
 ## 3. Run
 
+The scripts used below (`scripts/`, `benchmarks/`) are in the GitHub
+repository; the Comfy Registry package does not include them.
+
+
 Open `workflows/wan21_t2v_14b_longlive_plug_4step.json` (LongLive-Plug, 4 steps)
 or `workflows/wan21_t2v_14b_baseline_50step.json` (base model, official
 50-step recipe) in ComfyUI and queue it. The API-format equivalents are in

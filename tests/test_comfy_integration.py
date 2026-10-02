@@ -266,3 +266,46 @@ def test_upstream_init_refuses_non_empty_latent(env):
     noise = Noise_RandomNoise(1).generate_noise({"samples": latent})
     with pytest.raises(ValueError, match="empty latent"):
         guider.sample(noise, latent, sampler, sigmas, seed=1, disable_pbar=True)
+
+
+RUNTIME_FILES = ("__init__.py", "pyproject.toml", "longlive_plug")
+
+
+@pytest.mark.parametrize("dirname", ["longlive-plug", "LongLive Plug copy ü"])
+def test_package_loads_under_any_directory_name(comfyui, tmp_path, dirname):
+    """Registry/Manager installs into custom_nodes/<node id>; nothing may depend on the folder name."""
+    import asyncio
+    import shutil
+    from pathlib import Path
+
+    from longlive_plug import comfy_nodes as source
+
+    repo = Path(__file__).resolve().parents[1]
+    target = tmp_path / "custom_nodes" / dirname
+    target.mkdir(parents=True)
+    for name in RUNTIME_FILES:
+        src = repo / name
+        if src.is_dir():
+            shutil.copytree(src, target / name, ignore=shutil.ignore_patterns("__pycache__"))
+        else:
+            shutil.copy2(src, target / name)
+    nodes = comfyui["nodes"]
+    saved = (dict(nodes.NODE_CLASS_MAPPINGS), dict(nodes.NODE_DISPLAY_NAME_MAPPINGS))
+    try:
+        assert asyncio.run(nodes.load_custom_node(str(target)))
+        for name, display in source.NODE_DISPLAY_NAME_MAPPINGS.items():
+            cls = nodes.NODE_CLASS_MAPPINGS[name]
+            module_file = Path(sys.modules[cls.__module__].__file__).resolve()
+            assert module_file.is_relative_to(target.resolve()), module_file
+            assert nodes.NODE_DISPLAY_NAME_MAPPINGS[name] == display
+        loaded = {
+            n
+            for n, c in nodes.NODE_CLASS_MAPPINGS.items()
+            if Path(sys.modules[c.__module__].__file__).resolve().is_relative_to(target.resolve())
+        }
+        assert loaded == set(source.NODE_CLASS_MAPPINGS)
+    finally:
+        nodes.NODE_CLASS_MAPPINGS.clear()
+        nodes.NODE_CLASS_MAPPINGS.update(saved[0])
+        nodes.NODE_DISPLAY_NAME_MAPPINGS.clear()
+        nodes.NODE_DISPLAY_NAME_MAPPINGS.update(saved[1])

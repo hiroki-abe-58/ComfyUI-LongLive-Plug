@@ -1,0 +1,34 @@
+# Files excluded from the Comfy Registry package (gitignore syntax, applied on
+# top of .gitignore). The installed node needs only the runtime package,
+# workflows, docs and license files. Everything below stays in the GitHub
+# repository for development and reproduction.
+
+# Tests and CI
+tests/
+.github/
+.gitignore
+.comfyignore
+
+# Maintainer / benchmark tooling (not imported by the node; some scripts call
+# ffmpeg, nvidia-smi or a browser, and the benchmark probe patches ComfyUI
+# internals, so they do not belong in an installed node)
+scripts/
+benchmarks/
+
+# Raw benchmark records (summarised in docs/BENCHMARKS.md)
+docs/results/
+
+# Never packaged (also untracked/ignored, listed for safety)
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+*.gguf
+*.mp4
+*.webm
+*.mkv
+*.ply
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
