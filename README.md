@@ -45,7 +45,7 @@ The images above are reduced previews of those files.
 | **Tested** (model-free CI) | Ubuntu and Windows, CPU: node registration through ComfyUI's loader, adapter validation, patch/unpatch on a tiny Wan-shaped model, sampler pass counts, workflow validation with ComfyUI's `validate_prompt`. |
 | **Experimental** | ComfyUI's default automatic dtypes (fp16 DiT on this GPU): one 17-frame smoke run only. `allow_untested_derivative` for other Wan2.1-14B family models (e.g. I2V, VACE): shape-checked, never run. |
 | **Untested** | Linux / other GPUs with real weights, fp16 base files, other resolutions and lengths, macOS. |
-| **Not supported** | Quantized bases (fp8, GGUF, …): refused, because the patch path is not verified. Mixing backbones (1.3B, Wan2.2-5B or MiniMax-H3 adapters on 14B): refused by shape checks. |
+| **Not supported** | Quantized bases: refused, because their patch path is not verified. Checked with Comfy-Org's `wan2.1_t2v_14B_fp8_scaled` (refused); tensor subclasses such as ComfyUI's `QuantizedTensor` are refused by class; other quantized formats were not tried. Mixing backbones (1.3B, Wan2.2-5B or MiniMax-H3 adapters on 14B): refused by the target/shape checks. |
 | **Planned** | Wan2.2-TI2V-5B profile (separate backbone and adapters); MiniMax-H3 after its model card is re-checked. The long-context LoRA is not a few-step feature and is out of scope here. |
 
 ## Install
@@ -128,7 +128,7 @@ this README; methodology and raw data are in [docs/BENCHMARKS.md](docs/BENCHMARK
 - VRAM: nvidia-smi showed up to about 30–31 GiB used on the device (all
   processes; about 2.4 GiB was used by other applications before the runs).
   DynamicVRAM fills free VRAM by design, so this is not a minimum requirement.
-  PyTorch allocator peaks were 6.0–6.1 GiB allocated / 8.4–9.1 GiB reserved;
+  PyTorch allocator peaks were 6.0–6.1 GiB allocated / 7.9–9.1 GiB reserved;
   the model weights are managed outside that allocator. The minimum VRAM and
   host RAM needed were not measured. The machine has 64 GB RAM.
 - Quality (visual review of five extracted frames per video): B keeps the
@@ -146,11 +146,14 @@ this README; methodology and raw data are in [docs/BENCHMARKS.md](docs/BENCHMARK
   arithmetic* matches (docs/SCHEDULER.md).
 - The coverage report proves that ComfyUI attached every patch. On real
   weights the patched values were compared with upstream `merge_lora.py` on
-  CPU for 7 representative layers (bit-identical). In the server the same
-  float32 arithmetic runs on the GPU.
+  CPU for 7 representative layers (bit-identical). In the server ComfyUI
+  performs the same float32 arithmetic on the device where it stages the
+  weights, so float32 rounding can differ slightly from the CPU check.
 - The SHA-256 check reads each adapter once per ComfyUI session (about 3.6 GB).
-  Disable `verify_sha256` to skip it; renamed CFG adapters then need
-  `adapter_config.json` or another alpha source.
+  With `verify_sha256` disabled, the CFG adapter's alpha must come from
+  `adapter_config.json`, which is only read next to a file named
+  `adapter_model.safetensors`. A renamed CFG adapter is then refused rather
+  than applied with a guessed alpha.
 
 ## Security
 

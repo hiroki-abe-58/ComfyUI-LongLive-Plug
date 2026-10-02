@@ -56,7 +56,7 @@ LongLive-Plug `scripts/merge_lora.py` defines the merge:
 | Alpha / rank | Taken from `.alpha` tensors, safetensors metadata, `adapter_config.json` (only beside `adapter_model.safetensors`), or the pinned release hash; all available sources must agree. The Few-Step file carries `alpha=128` in its metadata; the CFG file needs its config or the pinned hash. |
 | Released files | SHA-256 of both released files are pinned. A pinned file connected to the wrong input is reported as swapped. |
 | Coverage | ComfyUI must build and attach exactly one patch per pair (`patches_applied == 400`, `application_rate == 1.0`, `unused_adapter_keys == 0`). |
-| Base dtype | Only float base weights are accepted; quantized (fp8 / int8 / GGUF-style) bases are refused, because their patch path is not verified. |
+| Base dtype | Only plain float tensors are accepted, because the quantized patch path is not verified. Comfy-Org's `wan2.1_t2v_14B_fp8_scaled` loads as `float8_e4m3fn` and is refused (checked with the real file). Tensor subclasses such as ComfyUI's `QuantizedTensor` are refused by class. Other formats were not tried. |
 | Clone semantics | The node patches a `ModelPatcher.clone()`. Tests check the input model has no patches, and that unpatching restores every original weight bit-for-bit. |
 | Real weights | `scripts/verify_merge.py` compares ComfyUI's patch path (`load_lora` → `calculate_weight` in float32 → round to bf16) with upstream `merge_lora.merge()` on 7 layers of the real bf16 base. Result: **100 % bit-identical** on CPU (`docs/results/verify_merge_wan21_14b.json`). |
 

@@ -33,7 +33,12 @@ INIT_NOISE_MODES = ["upstream", "comfy"]
 
 def _state_shapes(model) -> tuple[dict, dict]:
     sd = model.model_state_dict()
-    return {k: tuple(v.shape) for k, v in sd.items()}, {k: v.dtype for k, v in sd.items()}
+    # Tensor subclasses (e.g. ComfyUI's QuantizedTensor or GGUF wrappers) may report a
+    # float dtype while storing quantized data; record their class name instead so
+    # that adapter validation refuses them.
+    plain = (torch.Tensor, torch.nn.Parameter)
+    dtypes = {k: (v.dtype if type(v) in plain else type(v).__name__) for k, v in sd.items()}
+    return {k: tuple(v.shape) for k, v in sd.items()}, dtypes
 
 
 def _check_backbone(profile, shapes, allow_derivative: bool) -> dict:

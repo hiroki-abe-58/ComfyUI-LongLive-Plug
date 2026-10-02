@@ -129,6 +129,10 @@ def test_validate_against_base_detects_other_backbones():
     q_dtypes = {k: (torch.float8_e4m3fn if k.endswith("self_attn.q.weight") else v) for k, v in dtypes.items()}
     with pytest.raises(AdapterError, match="quantized"):
         validate_against_base(a, shapes, q_dtypes, PROF)
+    # Tensor subclasses are recorded by class name and refused too.
+    sub_dtypes = {k: ("QuantizedTensor" if k.endswith("ffn.0.weight") else v) for k, v in dtypes.items()}
+    with pytest.raises(AdapterError, match="QuantizedTensor"):
+        validate_against_base(a, shapes, sub_dtypes, PROF)
     # Extra targets outside the released layout are refused.
     extra = tiny_lora(PROF, rank=4)
     extra["time_embedding.0.lora_A.weight"] = torch.zeros(4, 256)
