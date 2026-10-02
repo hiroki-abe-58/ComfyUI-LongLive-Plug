@@ -4,6 +4,12 @@ NVlabs の [LongLive-Plug](https://github.com/NVlabs/LongLive/tree/main/LongLive
 ComfyUI 標準の Wan2.1 実装で正しく使うための**非公式**コミュニティ統合です。
 NVIDIA・Wan チーム・Comfy Org とは無関係です。詳細は英語版 [README.md](README.md) を参照してください。
 
+## インストール
+
+Comfy Registry に `longlive-plug`（表示名 "LongLive-Plug for ComfyUI"）として公開しています。
+ComfyUI-Manager で `LongLive-Plug` を検索するか、`comfy node install longlive-plug` でインストールできます。
+git clone でも導入できます。手順は README.md にあります。
+
 ## 何をするか
 
 - **LongLive-Plug Apply Adapter Pair**: 公式の Few-Step LoRA（重み 1.0）と CFG LoRA（重み 0.5）を

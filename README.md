@@ -1,5 +1,7 @@
 # ComfyUI-LongLive-Plug
 
+[![Comfy Registry: longlive-plug](https://img.shields.io/badge/Comfy%20Registry-longlive--plug-blue)](https://registry.comfy.org/publishers/hiroki-abe-58/nodes/longlive-plug)
+
 Unofficial community integration of [NVlabs LongLive-Plug](https://github.com/NVlabs/LongLive/tree/main/LongLive-Plug)
 adapters for ComfyUI's built-in Wan2.1 support. Not affiliated with or
 endorsed by NVIDIA, the Wan team or Comfy Org.
@@ -50,10 +52,30 @@ The images above are reduced previews of those files.
 
 ## Install
 
+Published on the [Comfy Registry](https://registry.comfy.org/publishers/hiroki-abe-58/nodes/longlive-plug)
+as **LongLive-Plug for ComfyUI**: node id `longlive-plug`, publisher
+`hiroki-abe-58`. It is still an unofficial community integration.
+
+**ComfyUI-Manager:** open the custom node list, search for `LongLive-Plug`
+(listed as "LongLive-Plug for ComfyUI") and install it. Manager puts it in
+`custom_nodes/longlive-plug`.
+
+**comfy-cli:**
+
+```bash
+comfy node install longlive-plug
+```
+
+**Git clone** (fallback; any folder name works):
+
 ```bash
 cd ComfyUI/custom_nodes
 git clone https://github.com/hiroki-abe-58/ComfyUI-LongLive-Plug
 ```
+
+Registry version 0.1.0 has the same node code as GitHub release v0.1.0. It
+also carries the Registry metadata and `.comfyignore` added afterwards
+(commit `919a811`).
 
 There are no extra Python dependencies. Model files, pinned revisions and
 SHA-256 are listed in [docs/REPRODUCE.md](docs/REPRODUCE.md). In short:
